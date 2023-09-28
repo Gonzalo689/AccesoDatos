@@ -1,6 +1,9 @@
 import java.io.File;
 public class Console {
-	
+	/**
+	 * Método que sirve para enseñar todos los directorios y ficheros donde se encuentra o de la ruta elegida
+	 * @param args parámetros escritos en la terminal [0] comando ls [1] ruta (opcional)
+	 */
 	public void ls(String[] args){
         String ruta = "";
 		if(args.length == 1 || args.length == 2) {
@@ -25,6 +28,12 @@ public class Console {
 		}else
 			System.out.println("Parametros no validos");
 	} 
+	/**
+	 * Método que sirve para copiar un fichero
+	 * @param args parámetros escritos en la terminal [0] comando cp [1] ruta donde se desea copiar el fichero
+	 *  [2] ruta nueva 
+	 */
+
 	public void cp(String[] args){
 		if(args.length == 3){
 			String ruta1 = args[1];
@@ -48,6 +57,11 @@ public class Console {
 		}else
 			System.out.println("Parametros no validos");
 	} 
+	/**
+	 * Método para mover ficheros 
+	 * @param args parámetros escritos en la terminal [0] comando mv [1] ruta donde se movera el fichero 
+	 *  [2] ruta nueva con su nombre nuevo nombre(nombre opcional) 
+	 */
 	public void mv(String[] args){
 		if(args.length == 3){
 			String ruta1 = args[1];
@@ -81,6 +95,12 @@ public class Console {
 		}else
 			System.out.println("Parametros no validos");
 	} 
+	/**
+	 * Método para borrar ficheros y directorios, para borrar directorios se pondra el comando -p (se borrara todo el contenido del directorio)
+	 * @param args parámetros escritos en la terminal [0] comando rm [1] ruta + nombre o 
+	 * 	comando -p para crear varios directorios
+	 *  [3] en caso de que se quiera borrar todo el contenido del directorio
+	 */
 	
 	public void rm(String[] args) {
 		String ruta;
@@ -107,7 +127,10 @@ public class Console {
 		}else
 			System.out.println("Parametros no validos");
 	}
-
+	/**
+	 * se le pasa el directorio que se desea borrar y hace un borrado recursivo
+	 * @param fichero directorio principal que se desea borrar
+	 */
     public void borrarFile(File fichero) {
         if(fichero.isDirectory()){
             File[] ficheros = fichero.listFiles();         
@@ -116,6 +139,12 @@ public class Console {
         }
         fichero.delete();
     }
+	/**
+	 * Método para crear directorio para crear mas de un directorio se pondra el comando -p
+	 * @param args parámetros escritos en la terminal [0] comando mkdir [1] ruta + nombre directorio(nuevo) o 
+	 * 	comando -p para crear varios directorios
+	 *  [3] en caso de que se quiera crear directorio/s el nombre del mismo 
+	 */
 
 	public void mkdir(String[] args){
 		String ruta1;
@@ -143,12 +172,19 @@ public class Console {
 		}else
 			System.out.println("Parametros no validos");
 	}
+	/**
+	 * Método que para crear recursivamente los directorios eseados
+	 * @param directorio directorio o conjunto de directorios que se quieren crear divididos por "\"
+	 */
 	public void crearDirectorios(File directorio){
 		if(!directorio.exists())
             crearDirectorios( directorio.getParentFile());
 		directorio.mkdir();
 	}
-
+	/**
+	 * Método que sirve para crear un fichero en una ruta si no hay ruta lo crea desde donde se ha ejecutado el programa
+	 * @param args parámetros escritos en la terminal [0] comando touch [1] nombre fichero [2]ruta (opcional) 
+	 */
 	public void touch(String[] args){
 		String nombreFichero = args[1];
 		String ruta = "";
@@ -172,6 +208,10 @@ public class Console {
 		}else
 			System.out.println("Parametros no validos");
 	} 
+	/**
+	 *  Busca un nombre o un fichero en una ruta en concreto si no se especifica ruta lo crea desde donde se ha ejecutado el programa
+	 * @param args parámetros escritos en la terminal. [0] comando grep [1] lo que se busca [2]ruta (opcional) 
+	 */
 	public void grep(String[] args){
 		String patron = args[1];
 		String ruta = "";
@@ -203,7 +243,10 @@ public class Console {
 		}else
 			System.out.println("Parametros no validos");	
 	}
-
+	/**
+	 * Programa principal donde se ejecutara principalmente desde la terminal donde se activara el comando correspondiente
+	 * @param args parámetros escritos desde la terminal
+	 */
 	public static void main(String[] args){
 		Console console = new Console();
 		if(args.length>0){
