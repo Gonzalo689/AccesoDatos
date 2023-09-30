@@ -349,6 +349,7 @@ public class PlFicheros {
                 System.out.println("Pulse cualquer tecla para continuar");
                 System.out.println("----------------------------");
                 String c = text.nextLine();
+                System.out.println(c);
             }
 
         } while (op != 6);

@@ -4,8 +4,6 @@
  */
 package com.mycompany.plficheros;
 
-import java.util.Objects;
-
 /**
  *
  * @author Gonzalo
