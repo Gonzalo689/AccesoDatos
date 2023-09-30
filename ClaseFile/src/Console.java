@@ -78,10 +78,9 @@ public class Console {
 						ficheroCopiado.createNewFile();
 						System.out.println("Archivo movido correctamente");
 					}else if(ruta3.isDirectory()){ 
-						String nombre = directorio.getName();
+						
 						fichero.delete();
-						File ficheroCopiado = new File(ruta3 + "\\" + nombre);
-						ficheroCopiado.createNewFile();
+						directorio.createNewFile();
 						System.out.println("Archivo movido correctamente");
 					}else
 						System.out.println("El archivo que desea copiar no existe");
@@ -234,6 +233,11 @@ public class Console {
 					}else if(nuevoNombre[0].equals(patron)){
 						System.out.println(nombre);
 						cont++;
+					}else if(nuevoNombre.length == 2){
+						if(nuevoNombre[1].equals(patron)){
+						System.out.println(nombre);
+						cont++;
+						}
 					}
 				}
 				if(cont == 0)
