@@ -15,7 +15,6 @@ import java.util.Map;
 public class FicheroII {
     private static LinkedList<Estudiante> estudiantes = new LinkedList<>();
     private static Map<String, Double[]> hashMap = new HashMap<>();
-    private static LinkedList<String> especialidades = new LinkedList<>();
 
     public static double promedio(){
         double notas = 0;
@@ -67,22 +66,14 @@ public class FicheroII {
         return Double.valueOf((aprobados * 100)/estudiantes.size());
     }
 
-    public static String especialidades(){
-        String espec =  "";
-        for (Estudiante estudiante : estudiantes) 
-            if(!especialidades.contains(estudiante.getEspecialidad())){
-                especialidades.add(estudiante.getEspecialidad());
-                espec += estudiante.getEspecialidad() + " ";
-            }
-        
-        return espec;
-    }
-
     public static Map<String, Double[]> espcialidaMap(){
-        for (String especialidad : especialidades) 
-            hashMap.put(especialidad, new Double[] {promedioEspec(especialidad) , aprobadosEspec(especialidad),
-                 (100.0 - aprobadosEspec(especialidad))});
-
+        String especialidad = "";
+        for (Estudiante estudiante : estudiantes) {
+            especialidad = estudiante.getEspecialidad();
+            if(!hashMap.containsKey(especialidad))
+                hashMap.put(especialidad, new Double[] {promedioEspec(especialidad) , aprobadosEspec(especialidad),
+                    (100.0 - aprobadosEspec(especialidad))});
+        }
         return hashMap;
     }
     public static double promedioEspec(String especialidad){
@@ -137,9 +128,16 @@ public class FicheroII {
         bfw.write("Mediana: " + mediana() + "\n");
         bfw.write("Nº Aprobados(%): " + formato.format(aprobad)  + "%\n");
         bfw.write("Nº Suspensos(%): " + formato.format((100 - aprobad)) + "%\n");
-        bfw.write("Listado Especialidades: " + especialidades() + "\n"); 
         hashMap = espcialidaMap();
-        
+        bfw.write("Listado Especialidades:");
+        hashMap.forEach((k,v) -> {
+            try {
+                bfw.write(" " + k);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        bfw.newLine();
         hashMap.forEach((k,v) -> {
             try {
                 bfw.write("Para " + k + 
@@ -153,8 +151,7 @@ public class FicheroII {
         bfr.close();
         bfw.close();
         
-        for (String esp : especialidades) 
-            System.out.println(esp);
+
         System.out.println();
         hashMap.forEach((k,v) -> System.out.println(k));
 
