@@ -13,7 +13,7 @@ public class Fichero {
             BufferedReader bfr = new BufferedReader(new InputStreamReader(
                     new FileInputStream(usuario + "\\Desktop\\fichero.txt"), "UTF-8"));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(usuario + "\\Desktop\\fichero2.txt",true), "UTF-8"));
+                    new FileOutputStream(usuario + "\\Desktop\\fichero2.txt",false), "UTF-8"));
             
             char caracBuscar = 't';
             
@@ -21,6 +21,8 @@ public class Fichero {
             int cantidad = 1;
             int fila = 1;
             int columna = 1;
+            String texto= "";
+
             while ((caracter = bfr.read()) != -1) {
                 char c = (char)caracter;
                 if(c == '\n'){
@@ -28,15 +30,16 @@ public class Fichero {
                     columna = 1;
                 }
                 if(c == caracBuscar){
-                    bfw.write("Numero de " + c + "= " + cantidad + "\n");
-                    bfw.write("Fila: " + fila + "\n");
-                    bfw.write("Columna: " + columna + "\n");
-                    bfw.write("\n");
+                    texto += "Fila: " + fila + "\n";
+                    texto += "Columna: " + columna + "\n\n";
                     cantidad++;
                 }   
                 
                 columna++;   
             }
+            bfw.write("Cantidad de " + caracBuscar + " = " + cantidad +  "\n");
+            bfw.newLine();
+            bfw.write(texto);
             bfw.close();
             bfr.close();
 
