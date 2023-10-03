@@ -99,28 +99,10 @@ public class FicheroII {
         
         return Double.valueOf((aprobados * 100)/estud);
     }
-    
-
-    public static void main(String[] args) throws Exception {
-         String usuario = System.getProperty("user.home");
-            BufferedReader bfr = new BufferedReader(new InputStreamReader(
-                    new FileInputStream(usuario + "\\Desktop\\alumnos.csv"), "UTF-8"));
-            BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(usuario + "\\Desktop\\salida.txt",false), "UTF-8"));
-
-        String linea;
-        String[] crearEstudiante;
-
-        // Formato para que solo muestre dos decimales
-        DecimalFormat formato = new DecimalFormat("#.##");  
-
-        //Leer archivo csv
-        while((linea = bfr.readLine()) != null){
-            crearEstudiante = linea.split(";");
-            if(!crearEstudiante[2].equals("Nota"))
-            estudiantes.add(new Estudiante(crearEstudiante[0], crearEstudiante[1], Integer.valueOf(crearEstudiante[2])));
-        }
-        // Escribir nuevo archivo
+    public static void escribirArchivo(BufferedWriter bfw) throws IOException{
+         // Formato para que solo muestre dos decimales
+        DecimalFormat formato = new DecimalFormat("#.##"); 
+        
         double aprobad = aprobados();
         bfw.write("N.º Total: " + estudiantes.size() + "\n" );
         bfw.write("Promedio: " + promedio() + "\n");
@@ -148,6 +130,28 @@ public class FicheroII {
                 e.printStackTrace();
             }
         });
+    }
+    
+
+    public static void main(String[] args) throws Exception {
+         String usuario = System.getProperty("user.home");
+            BufferedReader bfr = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(usuario + "\\Desktop\\alumnos.csv"), "UTF-8"));
+            BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(usuario + "\\Desktop\\salida.txt",false), "UTF-8"));
+
+        String linea;
+        String[] crearEstudiante;
+
+        //Leer archivo csv
+        while((linea = bfr.readLine()) != null){
+            crearEstudiante = linea.split(";");
+            if(!crearEstudiante[2].equals("Nota"))
+            estudiantes.add(new Estudiante(crearEstudiante[0], crearEstudiante[1], Integer.valueOf(crearEstudiante[2])));
+        }
+        // Escribir nuevo archivo
+        escribirArchivo(bfw);
+
         bfr.close();
         bfw.close();
         
