@@ -154,11 +154,6 @@ public class FicheroII {
 
         bfr.close();
         bfw.close();
-        
-
-        System.out.println();
-        hashMap.forEach((k,v) -> System.out.println(k));
-
 
     }
 }
