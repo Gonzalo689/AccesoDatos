@@ -119,13 +119,17 @@ public class FicheroII {
 
         String linea;
         String[] crearEstudiante;
+
+        // Formato para que solo muestre dos decimales
         DecimalFormat formato = new DecimalFormat("#.##");  
 
+        //Leer archivo csv
         while((linea = bfr.readLine()) != null){
             crearEstudiante = linea.split(";");
             if(!crearEstudiante[2].equals("Nota"))
             estudiantes.add(new Estudiante(crearEstudiante[0], crearEstudiante[1], Integer.valueOf(crearEstudiante[2])));
         }
+        // Escribir nuevo archivo
         double aprobad = aprobados();
         bfw.write("N.º Total: " + estudiantes.size() + "\n" );
         bfw.write("Promedio: " + promedio() + "\n");
@@ -140,14 +144,19 @@ public class FicheroII {
             try {
                 bfw.write("Para " + k + 
                 "\n   Promedio " + v[0] + 
-                "\n   Nº Aprobados(%) " + formato.format(v[1]) + 
-                "\n   Nº Suspensos(%) " + formato.format(v[2]) + "\n");
+                "\n   Nº Aprobados(%) " + formato.format(v[1]) + "%" + 
+                "\n   Nº Suspensos(%) " + formato.format(v[2]) + "%" + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+        bfr.close();
+        bfw.close();
         
-        hashMap.forEach((k,v) -> System.out.println("Fruta: " + k ));
+        for (String esp : especialidades) 
+            System.out.println(esp);
+        System.out.println();
+        hashMap.forEach((k,v) -> System.out.println(k));
 
 
     }
