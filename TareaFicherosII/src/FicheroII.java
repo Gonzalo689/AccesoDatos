@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class FicheroII {
-    private static Map<String, LinkedList<Integer>> hashMap2 = new HashMap<>();
+    private static Map<String, LinkedList<Integer>> hashMap = new HashMap<>();
 
     public static double promedio(LinkedList<Integer> notas){
         double total = 0.0;
@@ -76,7 +76,7 @@ public class FicheroII {
         bfw.write("Nº Aprobados(%): " + formato.format(aprobad)  + "%\n");
         bfw.write("Nº Suspensos(%): " + formato.format((100 - aprobad)) + "%\n");
         bfw.write("Listado Especialidades:");
-        hashMap2.forEach((k,v) -> {
+        hashMap.forEach((k,v) -> {
             try {
                 bfw.write(" " + k);
             } catch (IOException e) {
@@ -84,47 +84,52 @@ public class FicheroII {
             }
         });
         bfw.newLine();
-        hashMap2.forEach((k,v) -> {
+        hashMap.forEach((k,v) -> {
             try {
                 bfw.write("Para " + k + 
                 "\n   Promedio " + promedio(v) +
-                "\n   Nº Aprobados(%) " + aprobados(v) + "%" + 
-                "\n   Nº Suspensos(%) " + (100 - aprobados(v))  + "%" + "\n");
+                "\n   Nº Aprobados(%) " + formato.format(aprobados(v)) + "%" + 
+                "\n   Nº Suspensos(%) " + formato.format((100 - aprobados(v)))  + "%" + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
     
-    public static void main(String[] args) throws Exception {
-         String usuario = System.getProperty("user.home");
+    public static void main(String[] args) {
+        try {
+            String usuario = System.getProperty("user.home");
             BufferedReader bfr = new BufferedReader(new InputStreamReader(
                     new FileInputStream(usuario + "\\Desktop\\alumnos.csv"), "UTF-8"));
             BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(usuario + "\\Desktop\\salida.txt",false), "UTF-8"));
 
-        String linea;
-        String[] estudiante;
-        LinkedList<Integer> notas = new LinkedList<>();
+            String linea;
+            String[] estudiante;
+            LinkedList<Integer> notas = new LinkedList<>();
 
-        //Leer archivo csv
-        while((linea = bfr.readLine()) != null){
-            estudiante = linea.split(";");
-            if(!estudiante[2].equals("Nota")){
-            
-                notas.add(Integer.valueOf(estudiante[2]));
-                if(!hashMap2.containsKey(estudiante[1])){
-                    hashMap2.put(estudiante[1], new LinkedList<>());
-                    hashMap2.get(estudiante[1]).add(Integer.valueOf(estudiante[2]));
-                }else
-                    hashMap2.get(estudiante[1]).add(Integer.valueOf(estudiante[2]));
+            //Leer archivo csv
+            while((linea = bfr.readLine()) != null){
+                estudiante = linea.split(";");
+                if(!estudiante[2].equals("Nota")){
+                
+                    notas.add(Integer.valueOf(estudiante[2]));
+                    if(!hashMap.containsKey(estudiante[1])){
+                        hashMap.put(estudiante[1], new LinkedList<>());
+                        hashMap.get(estudiante[1]).add(Integer.valueOf(estudiante[2]));
+                    }else
+                        hashMap.get(estudiante[1]).add(Integer.valueOf(estudiante[2]));
+                }
             }
-        }
-        // Escribir nuevo archivo
-        escribirArchivo(bfw, notas);
+            // Escribir nuevo archivo
+            escribirArchivo(bfw, notas);
 
-        bfr.close();
-        bfw.close();
+            bfr.close();
+            bfw.close();
+
+        } catch (Exception e) {
+            System.out.println("Fallo e");
+        }
 
     }
 }
