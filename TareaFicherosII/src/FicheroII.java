@@ -11,44 +11,41 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-
 public class FicheroII {
-    private static LinkedList<Estudiante> estudiantes = new LinkedList<>();
-    private static Map<String, Double[]> hashMap = new HashMap<>();
+    private static Map<String, LinkedList<Integer>> hashMap2 = new HashMap<>();
 
-    public static double promedio(){
-        double notas = 0;
-        for (Estudiante estudiante : estudiantes) 
-            notas += estudiante.getNota();
-        return notas/estudiantes.size(); 
+    public static double promedio(LinkedList<Integer> notas){
+        double total = 0.0;
+        for (Integer nota : notas) 
+            total += nota;
+        return total/notas.size(); 
     }
-    public static int moda(){
+    public static int moda(LinkedList<Integer> notas){
         LinkedList<Integer> numeros = new LinkedList<>();
-
         int cantMax = 0;
-        int moda = estudiantes.get(0).getNota();
+        int moda = notas.get(0);
         
-        for (int i = 0; i < estudiantes.size(); i++) {
+        for (int i = 0; i < notas.size(); i++) {
             int cont=0;
-            if(!numeros.contains(estudiantes.get(i).getNota())){
-                numeros.add(estudiantes.get(i).getNota());
-                for (int j = 0; j < estudiantes.size(); j++) 
-                    if(estudiantes.get(j).getNota() == estudiantes.get(i).getNota())
+            if(!numeros.contains(notas.get(i))){
+                numeros.add(notas.get(i));
+                for (int j = 0; j < notas.size(); j++) 
+                    if(notas.get(j) == notas.get(i))
                         cont++;
                 
                 if(cont > cantMax){
                     cantMax = cont;
-                    moda = estudiantes.get(i).getNota();
+                    moda = notas.get(i);
                 }
                 cont = 0;
             }
         }
         return moda;
     }
-    public static int mediana(){
+    public static int mediana(LinkedList<Integer> notas){
         LinkedList<Integer> numeros = new LinkedList<>();
-        for (Estudiante estudiante : estudiantes) 
-            numeros.add(estudiante.getNota());
+        for (Integer nota : notas) 
+            numeros.add(nota);
         
         Collections.sort(numeros);
         int cantNum = numeros.size();
@@ -58,61 +55,28 @@ public class FicheroII {
             return (numeros.get((cantNum/2)-1) + numeros.get(cantNum/2))/2;        
     }
 
-    public static double aprobados(){
+    public static double aprobados(LinkedList<Integer> notas){
         double aprobados = 0;
-        for (Estudiante estudiante : estudiantes) 
-            if(estudiante.getNota()>=5)
+        for (Integer nota : notas) 
+            if(nota >=5)
                 aprobados++;
-        return Double.valueOf((aprobados * 100)/estudiantes.size());
+
+        return Double.valueOf((aprobados * 100)/notas.size());
     }
 
-    public static Map<String, Double[]> espcialidaMap(){
-        String especialidad = "";
-        for (Estudiante estudiante : estudiantes) {
-            especialidad = estudiante.getEspecialidad();
-            if(!hashMap.containsKey(especialidad))
-                hashMap.put(especialidad, new Double[] {promedioEspec(especialidad) , aprobadosEspec(especialidad),
-                    (100.0 - aprobadosEspec(especialidad))});
-        }
-        return hashMap;
-    }
-    public static double promedioEspec(String especialidad){
-        double notas = 0;
-        int estud = 0;
-        for (Estudiante estudiante : estudiantes) 
-            if(estudiante.getEspecialidad().equals(especialidad)){
-                notas += estudiante.getNota();
-                estud++;
-            }
-        
-        return notas/estud;
-    }
-    public static double aprobadosEspec(String especialidad){
-        double aprobados = 0;
-        double estud = 0;
-        for (Estudiante estudiante : estudiantes) 
-            if(estudiante.getEspecialidad().equals(especialidad)){
-                estud++;
-                if(estudiante.getNota() >= 5)
-                    aprobados++;
-            }        
-        
-        return Double.valueOf((aprobados * 100)/estud);
-    }
-    public static void escribirArchivo(BufferedWriter bfw) throws IOException{
+    public static void escribirArchivo(BufferedWriter bfw, LinkedList<Integer> notas) throws IOException{
          // Formato para que solo muestre dos decimales
         DecimalFormat formato = new DecimalFormat("#.##"); 
         
-        double aprobad = aprobados();
-        bfw.write("N.º Total: " + estudiantes.size() + "\n" );
-        bfw.write("Promedio: " + promedio() + "\n");
-        bfw.write("Moda: " + moda() + "\n");
-        bfw.write("Mediana: " + mediana() + "\n");
+        double aprobad = aprobados(notas);
+        bfw.write("N.º Total: " + notas.size() + "\n" );
+        bfw.write("Promedio: " + promedio(notas) + "\n");
+        bfw.write("Moda: " + moda(notas) + "\n");
+        bfw.write("Mediana: " + mediana(notas) + "\n");
         bfw.write("Nº Aprobados(%): " + formato.format(aprobad)  + "%\n");
         bfw.write("Nº Suspensos(%): " + formato.format((100 - aprobad)) + "%\n");
-        hashMap = espcialidaMap();
         bfw.write("Listado Especialidades:");
-        hashMap.forEach((k,v) -> {
+        hashMap2.forEach((k,v) -> {
             try {
                 bfw.write(" " + k);
             } catch (IOException e) {
@@ -120,19 +84,18 @@ public class FicheroII {
             }
         });
         bfw.newLine();
-        hashMap.forEach((k,v) -> {
+        hashMap2.forEach((k,v) -> {
             try {
                 bfw.write("Para " + k + 
-                "\n   Promedio " + v[0] + 
-                "\n   Nº Aprobados(%) " + formato.format(v[1]) + "%" + 
-                "\n   Nº Suspensos(%) " + formato.format(v[2]) + "%" + "\n");
+                "\n   Promedio " + promedio(v) +
+                "\n   Nº Aprobados(%) " + aprobados(v) + "%" + 
+                "\n   Nº Suspensos(%) " + (100 - aprobados(v))  + "%" + "\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
     
-
     public static void main(String[] args) throws Exception {
          String usuario = System.getProperty("user.home");
             BufferedReader bfr = new BufferedReader(new InputStreamReader(
@@ -141,16 +104,24 @@ public class FicheroII {
                     new FileOutputStream(usuario + "\\Desktop\\salida.txt",false), "UTF-8"));
 
         String linea;
-        String[] crearEstudiante;
+        String[] estudiante;
+        LinkedList<Integer> notas = new LinkedList<>();
 
         //Leer archivo csv
         while((linea = bfr.readLine()) != null){
-            crearEstudiante = linea.split(";");
-            if(!crearEstudiante[2].equals("Nota"))
-            estudiantes.add(new Estudiante(crearEstudiante[0], crearEstudiante[1], Integer.valueOf(crearEstudiante[2])));
+            estudiante = linea.split(";");
+            if(!estudiante[2].equals("Nota")){
+            
+                notas.add(Integer.valueOf(estudiante[2]));
+                if(!hashMap2.containsKey(estudiante[1])){
+                    hashMap2.put(estudiante[1], new LinkedList<>());
+                    hashMap2.get(estudiante[1]).add(Integer.valueOf(estudiante[2]));
+                }else
+                    hashMap2.get(estudiante[1]).add(Integer.valueOf(estudiante[2]));
+            }
         }
         // Escribir nuevo archivo
-        escribirArchivo(bfw);
+        escribirArchivo(bfw, notas);
 
         bfr.close();
         bfw.close();
