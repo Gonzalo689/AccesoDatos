@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.DecimalFormat;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -64,6 +65,23 @@ public class FicheroII {
         return Double.valueOf((aprobados * 100)/notas.size());
     }
 
+    public static String topCinco(LinkedList <Estudiante> estudiantes ,String asignatura){
+        String top = "";
+        Comparator<Estudiante> c = new Comparator<Estudiante>() {
+            @Override
+            public int compare(Estudiante e1, Estudiante e2) {
+                return Integer.compare(e1.getNota(), e2.getNota());
+            }
+        };
+        estudiantes.sort(c);
+        
+        for (int i = estudiantes.size() - 1; i > estudiantes.size() - 6; i--) {
+            top += estudiantes.get(i).getNombre() + ", ";
+        }
+        
+        return top ;
+    }
+
     public static void escribirArchivo(BufferedWriter bfw, LinkedList<Integer> notas) throws IOException{
          // Formato para que solo muestre dos decimales
         DecimalFormat formato = new DecimalFormat("#.##"); 
@@ -89,12 +107,13 @@ public class FicheroII {
                 bfw.write("Para " + k + 
                 "\n   Promedio " + promedio(v) +
                 "\n   Nº Aprobados(%) " + formato.format(aprobados(v)) + "%" + 
-                "\n   Nº Suspensos(%) " + formato.format((100 - aprobados(v)))  + "%" + "\n");
+                "\n   Nº Suspensos(%) " + formato.format((100 - aprobados(v)))  + "%\n");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
+
     
     public static void main(String[] args) {
         try {
@@ -107,12 +126,13 @@ public class FicheroII {
             String linea;
             String[] estudiante;
             LinkedList<Integer> notas = new LinkedList<>();
+             LinkedList<Estudiante> estudiantes = new LinkedList<>();
 
             //Leer archivo csv
             while((linea = bfr.readLine()) != null){
                 estudiante = linea.split(";");
                 if(!estudiante[2].equals("Nota")){
-                
+                    estudiantes.add(new Estudiante(estudiante[0], estudiante[1], Integer.valueOf(estudiante[2]))) ;
                     notas.add(Integer.valueOf(estudiante[2]));
                     if(!hashMap.containsKey(estudiante[1])){
                         hashMap.put(estudiante[1], new LinkedList<>());
@@ -121,15 +141,18 @@ public class FicheroII {
                         hashMap.get(estudiante[1]).add(Integer.valueOf(estudiante[2]));
                 }
             }
+
+            System.out.println(topCinco(estudiantes, "Ciencias"));
+
             // Escribir nuevo archivo
-            escribirArchivo(bfw, notas);
+             //escribirArchivo(bfw, notas);
 
             bfr.close();
             bfw.close();
 
         } catch (Exception e) {
-            System.out.println("Fallo e");
+            System.out.println("Fallo ");
         }
-
+        //  top 5 alumnos por asignatura y nota mas repetida por asignatura
     }
 }
