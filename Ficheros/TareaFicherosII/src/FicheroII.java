@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class FicheroII {
     private static Map<String, LinkedList<Integer>> hashMap = new HashMap<>();
+    private static LinkedList<Estudiante> estudiantes = new LinkedList<>();
 
     public static double promedio(LinkedList<Integer> notas){
         double total = 0.0;
@@ -64,8 +65,12 @@ public class FicheroII {
 
         return Double.valueOf((aprobados * 100)/notas.size());
     }
-
-    public static String topCinco(LinkedList <Estudiante> estudiantes ,String asignatura){
+   /**
+    * Función que devuelve el nombre completo de los tres mejores estudiantes de cada asignatura
+    * @param asignatura nombre de la asignatura
+    * @return devuelve un string con el nombre completo de los tres mejores estudiante de la asignatura
+    */
+    public static String topTres(String asignatura){
         String top = "";
         Comparator<Estudiante> c = new Comparator<Estudiante>() {
             @Override
@@ -74,11 +79,17 @@ public class FicheroII {
             }
         };
         estudiantes.sort(c);
-        
-        for (int i = estudiantes.size() - 1; i > estudiantes.size() - 6; i--) {
-            top += estudiantes.get(i).getNombre() + ", ";
-        }
-        
+        int cont = 0;
+        for (int i = estudiantes.size() - 1; i > 0 && cont != 3 ; i--) 
+            if (estudiantes.get(i).getEspecialidad().equals(asignatura)){
+                if(cont != 0)
+                    top += ", " + estudiantes.get(i).getNombre();
+                else
+                    top += estudiantes.get(i).getNombre();
+                cont ++;
+            }   
+            
+        top += ".";
         return top ;
     }
 
@@ -96,7 +107,7 @@ public class FicheroII {
         bfw.write("Listado Especialidades:");
         hashMap.forEach((k,v) -> {
             try {
-                bfw.write(" " + k);
+                bfw.write(" " + k + "(" + Double.valueOf((v.size()*100) /estudiantes.size()) + "%)");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -107,14 +118,15 @@ public class FicheroII {
                 bfw.write("Para " + k + 
                 "\n   Promedio " + promedio(v) +
                 "\n   Nº Aprobados(%) " + formato.format(aprobados(v)) + "%" + 
-                "\n   Nº Suspensos(%) " + formato.format((100 - aprobados(v)))  + "%\n");
+                "\n   Nº Suspensos(%) " + formato.format((100 - aprobados(v)))  + "%"+
+                "\n   Top 3 Estudiantes: " + topTres(k) + "\n");
             } catch (IOException e) {
+                
                 e.printStackTrace();
             }
         });
     }
 
-    
     public static void main(String[] args) {
         try {
             String usuario = System.getProperty("user.home");
@@ -126,7 +138,6 @@ public class FicheroII {
             String linea;
             String[] estudiante;
             LinkedList<Integer> notas = new LinkedList<>();
-             LinkedList<Estudiante> estudiantes = new LinkedList<>();
 
             //Leer archivo csv
             while((linea = bfr.readLine()) != null){
@@ -142,10 +153,8 @@ public class FicheroII {
                 }
             }
 
-            System.out.println(topCinco(estudiantes, "Ciencias"));
-
             // Escribir nuevo archivo
-             //escribirArchivo(bfw, notas);
+            escribirArchivo(bfw, notas);
 
             bfr.close();
             bfw.close();
@@ -153,6 +162,6 @@ public class FicheroII {
         } catch (Exception e) {
             System.out.println("Fallo ");
         }
-        //  top 5 alumnos por asignatura y nota mas repetida por asignatura
+        
     }
 }
