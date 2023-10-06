@@ -88,7 +88,7 @@ public class FicheroII {
                     top += estudiantes.get(i).getNombre();
                 cont ++;
             }   
-            
+
         top += ".";
         return top ;
     }
@@ -105,6 +105,8 @@ public class FicheroII {
         bfw.write("Nº Aprobados(%): " + formato.format(aprobad)  + "%\n");
         bfw.write("Nº Suspensos(%): " + formato.format((100 - aprobad)) + "%\n");
         bfw.write("Listado Especialidades:");
+
+        // forEach que me lanza el nombre de las asignaturas que hay con el porcentaje de alumnos que hay de cada una
         hashMap.forEach((k,v) -> {
             try {
                 bfw.write(" " + k + "(" + Double.valueOf((v.size()*100) /estudiantes.size()) + "%)");
@@ -121,7 +123,6 @@ public class FicheroII {
                 "\n   Nº Suspensos(%) " + formato.format((100 - aprobados(v)))  + "%"+
                 "\n   Top 3 Estudiantes: " + topTres(k) + "\n");
             } catch (IOException e) {
-                
                 e.printStackTrace();
             }
         });
