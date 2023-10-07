@@ -12,20 +12,26 @@ public class FicheroIII {
 
     public void generarIndice(String src, String dst){
         try {
+        int numCaracteres=31;
+
         RandomAccessFile raf = new RandomAccessFile(src, "r");
-        raf.seek(30);
+        raf.seek(numCaracteres);
         BufferedReader bfr = new BufferedReader(new InputStreamReader(
                     new FileInputStream(raf.getFD()), "UTF-8"));
         BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(dst), "UTF-8"));
+                    new FileOutputStream(dst, false), "UTF-8"));
         
         String linea;
         String[] fichero;
+        
         while((linea = bfr.readLine()) != null){
             fichero = linea.split(";");
-            System.out.println(fichero[0]);
-            
+            bfw.write(fichero[0] + ";" + numCaracteres + "\n");
+            numCaracteres += linea.getBytes().length;
         } 
+        raf.close();
+        bfr.close();
+        bfw.close();
 
         } catch (Exception e) {
             System.out.println("Fallo en la manipulación de los ficheros");
@@ -34,6 +40,35 @@ public class FicheroIII {
     }
 
     public void buscarInfo(String dni, String indexFile){
+        try {
+            RandomAccessFile raf = new RandomAccessFile("db.csv", "r");
+            BufferedReader bfr2 = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(indexFile), "UTF-8"));      
+            String linea;
+            String[] fichero;
+            int numCaracteres = 0;
+
+            while((linea = bfr2.readLine()) != null){
+            fichero = linea.split(";");
+                if(fichero[0].equals(dni)){
+                    numCaracteres = Integer.valueOf(fichero[1]);
+                    raf.seek(numCaracteres);
+                }
+            } 
+            BufferedReader bfr = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(raf.getFD()), "UTF-8"));
+                    
+            if(bfr.readLine() != null &&  numCaracteres != 0)
+                System.out.println(bfr.readLine());
+            
+            raf.close();
+            bfr2.close();
+            bfr.close();
+
+        } catch (Exception e) {
+            System.out.println("Fallo en la manipulación de los ficheros");
+        }
+        
 
     }
     public static void main(String[] args){
