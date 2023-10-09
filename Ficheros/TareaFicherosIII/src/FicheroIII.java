@@ -7,11 +7,12 @@ import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
 
 public class FicheroIII {
-
     public void generarIndice(String src, String dst){
+         
         try {
         int numCaracteres=31;
-
+       
+        
         RandomAccessFile raf = new RandomAccessFile(src, "r");
         raf.seek(numCaracteres);
         BufferedReader bfr = new BufferedReader(new InputStreamReader(
@@ -21,6 +22,7 @@ public class FicheroIII {
         
         String linea;
         String[] fichero;
+        bfw.write("");
         
         while((linea = bfr.readLine()) != null){
             fichero = linea.split(";");
@@ -32,6 +34,7 @@ public class FicheroIII {
         bfw.close();
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Fallo en la manipulación de los ficheros");
         }
         
@@ -71,6 +74,8 @@ public class FicheroIII {
     }
     public static void main(String[] args){
         FicheroIII app = new FicheroIII();
+        String a  = System.getProperty("user.dir");
+        System.out.println(a);
         if(args.length==3){
             switch(args[0]){
                 case "-g":
@@ -89,3 +94,4 @@ public class FicheroIII {
         }
     }
 }
+
