@@ -4,8 +4,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -32,18 +30,22 @@ public class Cipher {
 				BufferedReader bfr = new BufferedReader(new InputStreamReader(
 						new FileInputStream(src), "UTF-8"));
 				BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(
-						new FileOutputStream(dst, false), "UTF-8"));
+						new FileOutputStream(dst), "UTF-8"));
 				
-				String linea;
-				
+				String linea = "";
 				bfw.write("");
 				
-				while((linea = bfr.readLine()) != null){
-					bfw.write(linea);
-				}	
-				bfw.close();
-				bfr.close();
+				while ((linea = bfr.readLine()) != null) {
+					for (int i = 0; i < linea.length(); i++) {
+						int asciiAleatorio = swaps[linea.charAt(i)];
+						bfw.write((char) asciiAleatorio);
+					}
+					bfw.newLine();
+				}
 
+				close(bfw);
+				close(bfr);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -54,25 +56,70 @@ public class Cipher {
 	public void decrypt(File src, File dst)
 	{
 		if(src.exists() && src.isFile()){
+			try {
+				BufferedReader bfr = new BufferedReader(new InputStreamReader(
+						new FileInputStream(src), "UTF-8"));
+				BufferedWriter bfw = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(dst), "UTF-8"));
+				
+				int caracter;
+				String linea = "";
+				bfw.write("");
+
+				while ((linea = bfr.readLine()) != null) {
+					for (int i = 0; i < linea.length(); i++) {
+						caracter = linea.charAt(i);
+						for (int j = 32; j <= 126 ; j++) 
+							if (swaps[j] == caracter) {
+								bfw.write((char)j);
+								break;
+							}
+					}
+					bfw.newLine();
+				}
+
+				close(bfw);
+				close(bfr);
+
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			
 		}
 	}
 	
 	private void shuffle(int password)
 	{
-		//Mete valores desde 0 a 255 en el array de forma aleatoria y 
-		//sin repetidos <-(usar el método find para esto)
-		//Código de ayuda
 		Random r = new Random(password);
-		int max = swaps.length;
-		int random = r.nextInt(max);
+		int longitud = swaps.length;
+		int max = 126;
+		int min = 32;
+		int numerosAleatorios;
+		
+		for (int i = 0; i < longitud; i++) {
+            if(i < min || i > max)
+              swaps[i] = r.nextInt(longitud); 
+            else{
+                numerosAleatorios = r.nextInt(max - min + 1) + min;
+                if(!find(numerosAleatorios))
+					swaps[i] = numerosAleatorios;
+				else
+					i--;
+            }
+        }
 
 	}
 	
 	private boolean find(int value)
 	{
-		//Busca el valor en el array 'swaps' y devuelve si lo encuentra o no
-		return true;
+		for (int i = 32; i < 126; i++) {
+			if(swaps[i] == value)
+				return true;
+			
+		}
+		return false;
 	}
 	
 	public static void close(Closeable c)
@@ -80,12 +127,11 @@ public class Cipher {
 	     if (c == null) return; 
 	     try 
 	     {
-			
 	         c.close();
 	     } 
 	     catch (IOException e) 
 	     {
-	         //log the exception
+	         e.printStackTrace();
 	     }
 	}
 	
