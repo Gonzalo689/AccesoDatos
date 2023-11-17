@@ -213,9 +213,12 @@ public class App  {
     
         while (rs.next()) {
             for (String nombreColumn : columnasNombre) {
-                System.out.println(rs.getString(nombreColumn.trim()));
+                System.out.print(rs.getString(nombreColumn.trim()));
+                System.out.print(" ");
             }
+            System.out.println();
         }
+        
     }
     public void informacionTablaConjunta(String tabla1, String tabla2) throws SQLException {
         Statement s1 = c.createStatement();
