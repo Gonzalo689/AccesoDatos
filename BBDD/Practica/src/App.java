@@ -373,6 +373,7 @@ public class App  {
         a.informacionTabla("producto" ,"producto_id, nombre_producto" , "producto_id = 1");
         
         a.informacionTablaConjunta("producto", "tamaño");
+        
         a.encontrarPatron("Carlos");
         //a.guardarCsvProducto();
 
