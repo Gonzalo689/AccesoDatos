@@ -34,6 +34,18 @@ public class App  {
             return null;
         }
     }
+    public void cerrarConexion() {
+        try {
+            if (c!=null) 
+                c.close();
+            if (s!=null) 
+                s.close();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
+    
 
     public void createTable(String sql) throws SQLException {
         Statement s = c.createStatement();

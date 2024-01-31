@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<base_de_datos>
+	<propietarios>
+		<propietari>
+			<id>1</id>
+			<nombre>Juan Pérez</nombre>
+			<direccion>Calle 123, Ciudad A</direccion>
+			<telefono>123-456-7890</telefono>
+		</propietari>
+		<propietari>
+			<id>2</id>
+			<nombre>Maria González</nombre>
+			<direccion>Avenida XYZ, Ciudad B</direccion>
+			<telefono>987-654-3210</telefono>
+		</propietari>
+	</propietarios>
+	<vehiculos>
+		<vehicul>
+			<numero_serie>123456789</numero_serie>
+			<modelo>Toyota Camry</modelo>
+			<anio>2020</anio>
+			<color>Azul</color>
+			<propietario_id>1</propietario_id>
+		</vehicul>
+		<vehicul>
+			<numero_serie>326189423</numero_serie>
+			<modelo>Seat Leon</modelo>
+			<anio>2020</anio>
+			<color>null</color>
+			<propietario_id>null</propietario_id>
+		</vehicul>
+		<vehicul>
+			<numero_serie>456789123</numero_serie>
+			<modelo>Honda Civic</modelo>
+			<anio>2021</anio>
+			<color>Verde</color>
+			<propietario_id>1</propietario_id>
+		</vehicul>
+		<vehicul>
+			<numero_serie>987654321</numero_serie>
+			<modelo>Ford Mustang</modelo>
+			<anio>2019</anio>
+			<color>Rojo</color>
+			<propietario_id>2</propietario_id>
+		</vehicul>
+	</vehiculos>
+</base_de_datos>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<usuarios>
+    <usuari>
+        <id>1</id>
+        <nombre>Ana García</nombre>
+        <email>ana@example.com</email>
+        <fecha_registro>2023-10-27</fecha_registro>
+    </usuari>
+    <usuari>
+        <id>2</id>
+        <nombre>Carlos Martínez</nombre>
+        <email>carlos@example.com</email>
+        <fecha_registro>2023-10-28</fecha_registro>
+    </usuari>
+    <usuari>
+        <id>3</id>
+        <nombre>Laura Pérez</nombre>
+        <email>laura@example.com</email>
+        <fecha_registro>2023-10-29</fecha_registro>
+    </usuari>
+</usuarios>
