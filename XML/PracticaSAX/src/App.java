@@ -49,8 +49,10 @@ public class App extends DefaultHandler {
     public void characters(char[] ch, int start, int length) {
         String text3 = "";
         String text = new String(ch, start, length);
-
-        if(text.trim().length()>0 ){
+        //System.out.println(dato);
+        if(text.trim().length()>0){
+            
+            System.out.println(dato);
             String[] text2 = text.split("\n");
             for (String  c : text2) {
                 if (!c.isEmpty()) {
@@ -63,7 +65,6 @@ public class App extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName){
-        
         if (qName.trim().equals("library")) {
             libraries.add(library);
         }
@@ -75,7 +76,6 @@ public class App extends DefaultHandler {
     @Override
     public void endDocument(){}
 
-    
     public void datosLibreria(String datoNombre,String valor){
 		switch (datoNombre.trim().toLowerCase()) {
             case "address":
@@ -96,7 +96,10 @@ public class App extends DefaultHandler {
                 book.setPublish_date(valor);
 				break;
             case "description":
-                book.setDescription(valor);
+                if (book.getDescription() != null) 
+                    book.setDescription(book.getDescription() + " " + valor  );
+                else   
+                    book.setDescription(valor);
 				break;
 		}
 	}
