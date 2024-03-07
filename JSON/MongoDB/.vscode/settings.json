@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "d:\\Informatica2\\Acceso a datos\\UT1\\mongo-java-driver-3.12.11.jar",
+        "d:\\Informatica2\\Acceso a datos\\UT1\\gson-2.10.1.jar"
+    ]
+}

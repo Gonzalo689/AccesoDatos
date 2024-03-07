@@ -119,10 +119,10 @@ public class App {
 				l.setPrecio(Double.parseDouble(valor));
 			break;
             case "publish_date":
-				l.setFechaPubli(valor);;
+				l.setFechaPubli(valor);
 			break;
             case "description":
-				l.setDescripcion(valor);;
+				l.setDescripcion(valor);
 			break;
 		}
 	}

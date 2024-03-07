@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class Main {
     ArrayList<Persona> personas;
+    ArrayList<Pokemon> pokemons;
 
     public void crearLista(String json) {
         Gson gson = new Gson();
@@ -17,9 +18,23 @@ public class Main {
                 e.printStackTrace();
             }
     }
+    public void crearListaPokemon(String json) {
+        Gson gson = new Gson();
+            Type tipoListaPersona = new TypeToken<ArrayList<Pokemon>>(){}.getType();
+            try {
+                pokemons = gson.fromJson(new BufferedReader(new FileReader(json)), tipoListaPersona);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
     public void listadoPersonas() {
         for (Persona persona : personas) {
             System.out.println(persona.getName() + ", ");
+        }
+    }
+    public void listadoPokemon() {
+        for (Pokemon pok : pokemons) {
+            System.out.println(pok);
         }
     }
     public void personaMasGasto() {
@@ -72,13 +87,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         try {
-            String jsonFile = args[0];
+            String jsonFile = "personas.json";
             Main app = new Main(); 
-            app.crearLista(jsonFile);   
-            app.listadoPersonas();
-            app.personaMasGasto();
-            app.gastoMedio();
-            app.facturaMasCara();
+            jsonFile = "pokemon.json";
+            app.crearListaPokemon(jsonFile);
+            app.listadoPokemon();
         } catch (Exception e) {
             e.printStackTrace();
         }
